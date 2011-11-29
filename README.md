@@ -40,7 +40,29 @@ we just created.
 
 # API
 
-The main methods are `search(terms)` and `retrieveData(url)`.
+The main methods are `search(terms)` and `retrieveData(url)`, they are the only methods available in all the providers.
+
+```python
+provider = MegaDl(Urllib2Downloader())
+gigadl = GigaDl(provider)
+
+# the search(terms) method performs a ... search!
+results = gigadl.search('daft punk') # returns a list of MegaResult objects
+
+# and the retrieveData(url) returns all the data that a provider can find for an url
+data = gigadl.retrieveData(results[0].play_url)
+print 'The "%s" item can be downloaded here: %s' % (data, data.url)
+```
+
+Even if these two methods are enough to use GigaDl, there are a few more:
+
+```python
+gigadl.registerProvider(myNewProvider) # adds the given provider to the usable providers
+gigadl.registerProviders([myFirstProvider, otherProvider]) # same, but with a list
+gigadl.use('SomeProviderName') # selects the provider to use for the next calls to search() or retrieveData()
+gigadl.provider = MegaDl(Urllib2Downloader()) # same, but directly with an object
+gigadl.provider # returns the provider object in use
+```
 
 
 # Licence
