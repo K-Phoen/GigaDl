@@ -55,18 +55,18 @@ class GigaDl:
     return self._provider
 
   @provider.setter
-  def proxy(self, provider):
+  def provider(self, provider):
     """ Defines the provider to use (expects an object) """
 
     self._provider = provider
     self.registerProvider(provider)
 
   @proxy.deleter
-  def proxy(self):
+  def provider(self):
     """ Deletes the current selected provider """
 
     del self.providers[self._provider]
-    self._proxy = None
+    self._provider = None
 
   def registerProvider(self, provider):
     """ Register the given lists of providers """
