@@ -61,7 +61,7 @@ class GigaDl:
     self._provider = provider
     self.registerProvider(provider)
 
-  @proxy.deleter
+  @provider.deleter
   def provider(self):
     """ Deletes the current selected provider """
 
