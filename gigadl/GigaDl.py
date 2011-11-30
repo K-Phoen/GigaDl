@@ -68,20 +68,22 @@ class GigaDl:
     del self.providers[self._provider]
     self._provider = None
 
-  def registerProvider(self, provider):
+  def registerProvider(self, provider, name=None):
     """ Register the given lists of providers """
 
     if provider is not None:
-      self._providers[provider] = provider
+      self._providers[name or provider] = provider
 
     return self
 
-  def registerProviders(self, providers):
+  def registerProviders(self, *args, **kwargs):
     """ Register the given lists of providers """
 
-    if providers is not None:
-      for provider in providers:
-        self._registerProvider(provider)
+    for provider in args:
+      self.registerProvider(provider)
+
+    for name, provider in kwargs.iteritems():
+      self.registerProvider(provider, name)
 
     return self
 
@@ -90,7 +92,7 @@ class GigaDl:
 
     try:
       self._provider = self.providers[provider_name]
-    except KeyError, e:
+    except KeyError:
       raise KeyError('The provider "%s" is not registered' % provider_name)
 
     return self

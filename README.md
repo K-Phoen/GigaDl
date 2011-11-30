@@ -27,10 +27,7 @@ gigadl = GigaDl(provider) # use the MegaDl provider
 # or
 gigadl = GigaDl()
 gigadl.registerProvider(provider)
-gigadl.registerProviders([
-  FooProvider(downloader),
-  BarProvider(downloader)
-])
+gigadl.registerProviders(FooProvider(downloader),BarProvider(downloader))
 gigadl.use('MegaDl')
 ```
 
@@ -40,7 +37,8 @@ we just created.
 
 # API
 
-The main methods are `search(terms)` and `retrieveData(url)`, they are the only methods available in all the providers.
+The main methods are `search(terms)` and `retrieveData(url)`, they are the
+only methods available in all the providers.
 
 ```python
 provider = MegaDl(Urllib2Downloader())
@@ -58,7 +56,8 @@ Even if these two methods are enough to use GigaDl, there are a few more:
 
 ```python
 gigadl.registerProvider(myNewProvider) # adds the given provider to the usable providers
-gigadl.registerProviders([myFirstProvider, otherProvider]) # same, but with a list
+gigadl.registerProvider(otherNewProvider, 'yet another provider') # same, but with a specific name
+gigadl.registerProviders(myFirstProvider, otherProvider, kewl_provider=myKewlProvider) # same, but with an arguments list and named arguments
 gigadl.use('SomeProviderName') # selects the provider to use for the next calls to search() or retrieveData()
 gigadl.provider = MegaDl(Urllib2Downloader()) # same, but directly with an object
 gigadl.provider # returns the provider object in use
