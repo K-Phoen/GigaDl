@@ -39,7 +39,7 @@ def provider_required(func):
 
 
 
-class GigaDl:
+class GigaDl(object):
   """ Download manager class """
 
   def __init__(self, provider=None, providers=None):
@@ -65,7 +65,7 @@ class GigaDl:
   def provider(self):
     """ Deletes the current selected provider """
 
-    del self.providers[self._provider]
+    del self._providers[self._provider]
     self._provider = None
 
   def registerProvider(self, provider, name=None):
@@ -91,7 +91,7 @@ class GigaDl:
     """ Selects the provider to use """
 
     try:
-      self._provider = self.providers[provider_name]
+      self._provider = self._providers[provider_name]
     except KeyError:
       raise KeyError('The provider "%s" is not registered' % provider_name)
 
@@ -117,3 +117,8 @@ class GigaDl:
       raise Exception('You must pass an URL to retrieve')
 
     return self.provider.retrieveData(url)
+
+  def __iter__(self):
+    """ Iterator for looping through the providers """
+
+    return iter(self._providers)
