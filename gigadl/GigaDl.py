@@ -43,8 +43,8 @@ class GigaDl(object):
   """ Download manager class """
 
   def __init__(self, provider=None, providers=None):
-    self.provider = provider
     self._providers = {}
+    self.provider = provider
 
     self.registerProviders(providers)
 
