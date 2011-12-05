@@ -46,12 +46,11 @@ def provider_required(func):
 class GigaDl(object):
     """ Download manager class """
 
-    def __init__(self, provider=None, providers=None):
+    def __init__(self, provider=None):
         self._providers = {}
         self._provider = provider
 
         self.register_provider(provider)
-        self.register_providers(providers)
 
     @property
     def provider(self):
@@ -77,7 +76,7 @@ class GigaDl(object):
         """ Register the given lists of providers """
 
         if provider is not None:
-            self._providers[name or provider] = provider
+            self._providers[name or repr(provider)] = provider
 
         return self
 
@@ -87,7 +86,7 @@ class GigaDl(object):
         for provider in args:
             self.register_provider(provider)
 
-        for name, provider in kwargs.iteritems():
+        for name, provider in kwargs.items():
             self.register_provider(provider, name)
 
         return self
@@ -129,3 +128,16 @@ class GigaDl(object):
         """ Iterator for looping through the providers """
 
         return iter(self._providers)
+
+    def __contains__(self, item):
+        """ Test if the given item in registered as a provider """
+
+        if type(item) is str:
+            return item in self._providers
+
+        return item in self._providers.values()
+
+    def __len__(self):
+        """ Counts the registered providers """
+
+        return len(self._providers)

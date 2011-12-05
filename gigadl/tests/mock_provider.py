@@ -21,42 +21,16 @@
 #  from, out of or in connection with the software or the use or other dealing
 #  in the Software.
 
-from gigadl.GigaDl import GigaDl
-from gigadl.provider.MegaDl import MegaDl
-from gigadl.downloader.Urllib2Downloader import Urllib2Downloader
+
+from gigadl.provider.ProviderBase import ProviderBase
 
 
-if __name__ == '__main__':
-    provider = MegaDl(Urllib2Downloader())
-    dl = GigaDl(provider)
+class MockProvider(ProviderBase):
+    def __init__(self, downloader, name=None):
+        super(MockProvider, self).__init__(downloader)
+        self.name = name if name is not None else 'Mock provider'
 
-    while True:
-        print('Search:')
-        keywords = raw_input()
+    def __repr__(self):
+        """ Represents the provider's name """
 
-        print('Searching...')
-        results = dl.search(keywords)
-
-        if not results:
-            print('Nothing found!')
-            continue
-
-        for i, result in enumerate(results):
-            print('(%d) %s' % (i, result))
-
-        print('Which video do you want to download? (enter to make a new'
-              'search)')
-
-        try:
-            num = int(raw_input())
-        except ValueError:
-            continue
-
-        if num >= len(results):
-            print('Incorrect number!')
-
-        print('Retrieving data...')
-        data = dl.retrieve_data(results[num].play_url)
-
-        print(data)
-        print('You can download the video here: %s' % data.url)
+        return self.name

@@ -139,7 +139,7 @@ class MegaDl(ProviderBase):
             v1[v3] ^= (v6[v3 + 256] & 1)
             v3 += 1
 
-        v12 = u''.join([unicode(i) for i in v1])
+        v12 = ''.join([unicode(i) for i in v1])
         v3, v7 = 0, []
         stop = len(v12)
         while v3 < stop:
