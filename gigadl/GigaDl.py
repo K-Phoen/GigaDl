@@ -48,9 +48,9 @@ class GigaDl(object):
 
     def __init__(self, provider=None):
         self._providers = {}
-        self._provider = provider
+        self._provider = None
 
-        self.register_provider(provider)
+        self.use(provider)
 
     @property
     def provider(self):
@@ -99,6 +99,9 @@ class GigaDl(object):
             be an already registered provider. Otherwise we register the given
             provider if it's not already done and we select it.
         """
+
+        if not provider:
+            return self
 
         if type(provider) is not str and not provider in self:
             self.register_provider(provider)
