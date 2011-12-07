@@ -62,14 +62,13 @@ class GigaDl(object):
     def provider(self, provider):
         """ Defines the provider to use (expects an object) """
 
-        self._provider = provider
-        self.register_provider(provider)
+        self.use(provider)
 
     @provider.deleter
     def provider(self):
         """ Deletes the current selected provider """
 
-        del self._providers[self._provider]
+        del self._providers[repr(self._provider)]
         self._provider = None
 
     def register_provider(self, provider, name=None):
@@ -91,8 +90,13 @@ class GigaDl(object):
 
         return self
 
-    def use(self, provider_name):
+    def use(self, provider):
         """ Selects the provider to use """
+
+        if type(provider) is not str and not provider in self:
+            self.register_provider(provider)
+
+        provider_name = provider if type(provider) is str else repr(provider)
 
         try:
             self._provider = self._providers[provider_name]
@@ -120,7 +124,7 @@ class GigaDl(object):
         """
 
         if not url:
-            raise Exception('You must pass an URL to retrieve')
+            raise ValueError('You must pass an URL to retrieve')
 
         return self.provider.retrieve_data(url)
 
