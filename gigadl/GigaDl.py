@@ -60,19 +60,22 @@ class GigaDl(object):
 
     @provider.setter
     def provider(self, provider):
-        """ Defines the provider to use (expects an object) """
+        """ Defines the provider to use (expects an object or a provider name) """
 
         self.use(provider)
 
     @provider.deleter
     def provider(self):
-        """ Deletes the current selected provider """
+        """ Deletes the current selected provider and unregister it """
 
         del self._providers[repr(self._provider)]
         self._provider = None
 
     def register_provider(self, provider, name=None):
-        """ Register the given lists of providers """
+        """
+            Register the given provider. If no name specified, repr(provider)
+            will be used.
+        """
 
         if provider is not None:
             self._providers[name or repr(provider)] = provider
@@ -80,7 +83,7 @@ class GigaDl(object):
         return self
 
     def register_providers(self, *args, **kwargs):
-        """ Register the given lists of providers """
+        """ Register the given providers """
 
         for provider in args:
             self.register_provider(provider)
@@ -91,7 +94,11 @@ class GigaDl(object):
         return self
 
     def use(self, provider):
-        """ Selects the provider to use """
+        """
+            Selects the provider to use. If a string is given, we expect it to
+            be an already registered provider. Otherwise we register the given
+            provider if it's not already done and we select it.
+        """
 
         if type(provider) is not str and not provider in self:
             self.register_provider(provider)
@@ -120,7 +127,7 @@ class GigaDl(object):
     def retrieve_data(self, url):
         """
             Use the selected provider to retrieve the data corresponding to
-            the given URL
+            the given URL.
         """
 
         if not url:
@@ -134,7 +141,7 @@ class GigaDl(object):
         return iter(self._providers)
 
     def __contains__(self, item):
-        """ Test if the given item in registered as a provider """
+        """ Test if the given item (name or provider) in registered as a provider """
 
         if type(item) is str:
             return item in self._providers
